@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    id="Reducer" version="3.0">
+
+    <servlet>
+        <servlet-name>com.datareducer.ReducerApplication</servlet-name>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>com.datareducer.ReducerApplication</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>com.datareducer.ReducerContextListener</listener-class>
+    </listener>
+    
+    <context-param>
+        <description>Режим отладки</description>
+        <param-name>debugMode</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Список ресурсов</web-resource-name>
+            <description>Должен быть доступен всем авторизованным пользователям.</description>
+            <url-pattern>/</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>DataReducerAdministrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Чтение и запись модели. Доступно только администратору.</web-resource-name>
+            <url-pattern>/configuration</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>DataReducerAdministrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Каталог файлов</web-resource-name>
+            <url-pattern>/files/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>DataReducerAdministrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+
+    <security-role>
+        <description>Администратор</description>
+        <role-name>DataReducerAdministrator</role-name>
+    </security-role>
+
+</web-app>

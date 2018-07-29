@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ReducerConfiguration>
+    <InfoBaseSequenceValue>0</InfoBaseSequenceValue>
+    <ScriptSequenceValue>1</ScriptSequenceValue>
+    <DataServiceResourceSequenceValue>0</DataServiceResourceSequenceValue>
+    <Script id="1" name="iris" resourceName="iris">
+        <DefaultParameters/>
+        <Description>Ирисы Фишера</Description>
+        <PlotHeight>350</PlotHeight>
+        <PlotWidth>700</PlotWidth>
+        <ScriptBody>iris</ScriptBody>
+        <SecurityRoles/>
+        <UseDefaultTemplate>true</UseDefaultTemplate>
+        <WebAccess>true</WebAccess>
+    </Script>
+</ReducerConfiguration>
