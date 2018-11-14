@@ -38,6 +38,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
@@ -47,6 +48,7 @@ import org.glassfish.jersey.server.mvc.Viewable;
 
 import com.datareducer.model.ReducerConfiguration;
 import com.datareducer.model.Script;
+import com.datareducer.model.ScriptException;
 import com.datareducer.model.ScriptParameter;
 import com.datareducer.model.ScriptResult;
 import com.datareducer.model.UndefinedParameterException;
@@ -124,8 +126,15 @@ public class IndexResource {
         ScriptResult scriptResult;
         try {
             scriptResult = script.execute(executor,requestId, clientParams);
-        } catch (UndefinedParameterException e) {
-            throw new WebApplicationException(e);
+        } catch (UndefinedParameterException | ScriptException e) {
+            // XXX ThrowableMapper не перехватывает WebApplicationException, для которых установлен entity 
+            Response resp;
+            if (Boolean.parseBoolean(servletContext.getInitParameter("debugMode"))) {
+                resp = Response.status(INTERNAL_SERVER_ERROR).entity(e.getMessage()).type("text/plain; charset=utf-8").build();
+            } else {
+                resp = Response.status(INTERNAL_SERVER_ERROR).build();
+            }
+            throw new WebApplicationException(resp); 
         }
         
         return scriptResult;
@@ -163,8 +172,15 @@ public class IndexResource {
         ScriptResult scriptResult;
         try {
             scriptResult = script.execute(executor,requestId, clientParams);
-        } catch (UndefinedParameterException e) {
-            throw new WebApplicationException(e);
+        } catch (UndefinedParameterException | ScriptException e) {
+            // XXX ThrowableMapper не перехватывает WebApplicationException, для которых установлен entity 
+            Response resp;
+            if (Boolean.parseBoolean(servletContext.getInitParameter("debugMode"))) {
+                resp = Response.status(INTERNAL_SERVER_ERROR).entity(e.getMessage()).type("text/plain; charset=utf-8").build();
+            } else {
+                resp = Response.status(INTERNAL_SERVER_ERROR).build();
+            }
+            throw new WebApplicationException(resp); 
         }
 
         Map<String, Object> model = new HashMap<>();

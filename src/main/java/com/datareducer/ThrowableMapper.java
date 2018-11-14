@@ -19,15 +19,17 @@
  */
 package com.datareducer;
 
-import javax.ws.rs.NotFoundException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 public class ThrowableMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable th) {
-        if (th instanceof NotFoundException) {
-            return Response.status(404).entity("HTTP 404 Not Found").type("text/plain").build();
+        if (th instanceof WebApplicationException) {
+            if (((WebApplicationException)th).getResponse().getStatus() == 404) {
+                return Response.status(404).entity("HTTP 404 Not Found").type("text/plain").build();
+            }
         }
         return Response.status(500).entity("HTTP 500 Internal Server Error").type("text/plain").build();
     }
