@@ -38,6 +38,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.datareducer.model.ReducerConfiguration;
+import com.orientechnologies.orient.core.config.OGlobalConfiguration;
 
 public class ReducerContextListener implements ServletContextListener {
     private ReducerConfiguration configuration;
@@ -83,6 +84,11 @@ public class ReducerContextListener implements ServletContextListener {
             configuration.setApplicationParams(applicationParams);
             context.setAttribute("configuration", configuration);
             log.info("Модель успешно инициализирована");
+            
+            // Оключаем запуск OrientDB engine, если кэширование не требуется.
+            if (configuration.getInfoBases().isEmpty()) {
+                OGlobalConfiguration.INIT_IN_SERVLET_CONTEXT_LISTENER.setValue(false);
+            }
         }
 
         executor = Executors.newCachedThreadPool();
