@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017,2018 Kirill Mikhaylov <admin@datareducer.ru>
+ * Copyright (c) 2017-2019 Kirill Mikhaylov <admin@datareducer.ru>
  * 
  * Этот файл — часть программы DataReducer <http://datareducer.ru>.
  *
@@ -185,7 +185,7 @@ public class IndexResource {
 
         Map<String, Object> model = new HashMap<>();
 
-        for (ScriptParameter param : scriptResult.getParameters()) {
+        for (ScriptParameter param : scriptResult.getAllParameters()) {
             model.put((param.getName()), param.getValue());
         }
 
